@@ -3,17 +3,17 @@ defmodule Rtg.Mixfile do
 
   def project do
     [
+      aliases: aliases(),
       app: :rtg,
-      version: "0.0.1",
       build_path: "../../_build",
       config_path: "../../config/config.exs",
+      deps: deps(),
       deps_path: "../../deps",
-      lockfile: "../../mix.lock",
-      elixir: "~> 1.4",
+      elixir: "~> 1.7",
       elixirc_paths: elixirc_paths(Mix.env()),
+      lockfile: "../../mix.lock",
       start_permanent: Mix.env() == :prod,
-      aliases: aliases(),
-      deps: deps()
+      version: "0.0.1"
     ]
   end
 
@@ -36,8 +36,9 @@ defmodule Rtg.Mixfile do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:mariaex, ">= 0.0.0"},
-      {:ecto, "~> 2.1"}
+      {:ecto, "~> 3.0.0-rc"},
+      {:ecto_sql, "~> 3.0.0-rc"},
+      {:mariaex, "~> 0.9.0-rc"}
     ]
   end
 

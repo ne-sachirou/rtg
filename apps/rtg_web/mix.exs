@@ -3,18 +3,18 @@ defmodule RtgWeb.Mixfile do
 
   def project do
     [
-      app: :rtg_web,
-      version: "0.0.1",
-      build_path: "../../_build",
-      config_path: "../../config/config.exs",
-      deps_path: "../../deps",
-      lockfile: "../../mix.lock",
-      elixir: "~> 1.4",
-      elixirc_paths: elixirc_paths(Mix.env()),
-      compilers: [:phoenix, :gettext] ++ Mix.compilers(),
-      start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      app: :rtg_web,
+      build_path: "../../_build",
+      compilers: [:phoenix, :gettext] ++ Mix.compilers(),
+      config_path: "../../config/config.exs",
+      deps: deps(),
+      deps_path: "../../deps",
+      elixir: "~> 1.7",
+      elixirc_paths: elixirc_paths(Mix.env()),
+      lockfile: "../../mix.lock",
+      start_permanent: Mix.env() == :prod,
+      version: "0.0.1"
     ]
   end
 
@@ -37,14 +37,17 @@ defmodule RtgWeb.Mixfile do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.3.4"},
-      {:phoenix_pubsub, "~> 1.0"},
-      {:phoenix_ecto, "~> 3.2"},
-      {:phoenix_html, "~> 2.10"},
-      {:phoenix_live_reload, "~> 1.0", only: :dev},
-      {:gettext, "~> 0.11"},
-      {:rtg, in_umbrella: true},
-      {:cowboy, "~> 1.0"}
+      {:ecto, "~> 3.0.0-rc", override: true},
+      {:gettext, "~> 0.16"},
+      {:phoenix, "~> 1.4.0-rc", override: true},
+      {:phoenix_ecto, "~> 3.5"},
+      {:phoenix_html, "~> 2.12"},
+      {:phoenix_live_reload, "~> 1.1", only: :dev},
+      {:phoenix_pubsub, "~> 1.1"},
+      {:plug, "~> 1.7"},
+      {:plug_cowboy, "~> 2.0"},
+      {:poison, "~> 3.1"},
+      {:rtg, in_umbrella: true}
     ]
   end
 

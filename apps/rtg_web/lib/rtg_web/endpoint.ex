@@ -1,7 +1,7 @@
 defmodule RtgWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :rtg_web
 
-  socket("/socket", RtgWeb.UserSocket)
+  socket("/socket", RtgWeb.UserSocket, websocket: true)
 
   # Serve at "/" the static files from "priv/static" directory.
   #
