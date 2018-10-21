@@ -12,8 +12,12 @@ defmodule Rtg.Application do
   def start(_type, _args) do
     import Supervisor.Spec, warn: false
 
-    Supervisor.start_link([
-      supervisor(Rtg.Repo, []),
-    ], strategy: :one_for_one, name: Rtg.Supervisor)
+    Supervisor.start_link(
+      [
+        supervisor(Rtg.Repo, [])
+      ],
+      strategy: :one_for_one,
+      name: Rtg.Supervisor
+    )
   end
 end

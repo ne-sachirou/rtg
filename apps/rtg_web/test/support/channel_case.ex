@@ -25,13 +25,13 @@ defmodule RtgWeb.ChannelCase do
     end
   end
 
-
   setup tags do
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(Rtg.Repo)
+
     unless tags[:async] do
       Ecto.Adapters.SQL.Sandbox.mode(Rtg.Repo, {:shared, self()})
     end
+
     :ok
   end
-
 end

@@ -39,5 +39,3 @@ config :rtg_web, RtgWeb.Endpoint,
       ~r{lib/rtg_web/templates/.*(eex)$}
     ]
   ]
-
-

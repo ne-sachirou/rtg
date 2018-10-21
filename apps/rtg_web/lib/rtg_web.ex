@@ -28,8 +28,9 @@ defmodule RtgWeb do
 
   def view do
     quote do
-      use Phoenix.View, root: "lib/rtg_web/templates",
-                        namespace: RtgWeb
+      use Phoenix.View,
+        root: "lib/rtg_web/templates",
+        namespace: RtgWeb
 
       # Import convenience functions from controllers
       import Phoenix.Controller, only: [get_flash: 2, view_module: 1]
