@@ -1,0 +1,38 @@
+{
+  "name": "rtg_web",
+  "version": "0.0.1",
+  "description": "RTG",
+  "main": "lib/app.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "compile": "node_modules/.bin/parcel build lib/app.js -d priv/static/js",
+    "test": "mix test"
+  },
+  "author": "ne_Sachirou <utakata.c4se@gmail.com>",
+  "license": "AGPL-3.0-or-later",
+  "dependencies": {
+    "@babel/polyfill": "^7.0.0",
+    "parcel-bundler": "^1.10.3"
+  },
+  "babel": {
+    "presets": [
+      [
+        "env",
+        {
+          "targets": {
+            "browsers": [
+              "last 1 version"
+            ]
+          }
+        }
+      ]
+    ]
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.7.0"
+  }
+}

@@ -6,11 +6,12 @@ defmodule RtgWeb.Mixfile do
       aliases: aliases(),
       app: :rtg_web,
       build_path: "../../_build",
-      compilers: [:phoenix, :gettext] ++ Mix.compilers(),
+      compilers: [:phoenix, :gettext, :elixir_script] ++ Mix.compilers(),
       config_path: "../../config/config.exs",
       deps: deps(),
       deps_path: "../../deps",
       elixir: "~> 1.7",
+      elixir_script: [input: RtgWeb.Js],
       elixirc_paths: elixirc_paths(Mix.env()),
       lockfile: "../../mix.lock",
       start_permanent: Mix.env() == :prod,
@@ -38,6 +39,8 @@ defmodule RtgWeb.Mixfile do
   defp deps do
     [
       {:ecto, "~> 3.0.0-rc", override: true},
+      {:elixir_script, "~> 0.32"},
+      {:elixir_script_web, "~> 0.2"},
       {:gettext, "~> 0.16"},
       {:phoenix, "~> 1.4.0-rc", override: true},
       {:phoenix_ecto, "~> 3.5"},

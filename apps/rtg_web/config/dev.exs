@@ -11,7 +11,16 @@ config :rtg_web, RtgWeb.Endpoint,
   debug_errors: true,
   code_reloader: true,
   check_origin: false,
-  watchers: []
+  watchers: [
+    node: [
+      "node_modules/.bin/parcel",
+      "watch",
+      "lib/app.js",
+      "-d",
+      "priv/static/js",
+      cd: Path.expand("..", __DIR__)
+    ]
+  ]
 
 # ## SSL Support
 #
