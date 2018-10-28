@@ -1,5 +1,5 @@
 defmodule Rtg.Repo do
-  use Ecto.Repo, otp_app: :rtg
+  use Ecto.Repo, otp_app: :rtg, adapter: Ecto.Adapters.MySQL
 
   @doc """
   Dynamically loads the repository url from the

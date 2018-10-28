@@ -75,3 +75,9 @@ body, form, ul, table {
     border-bottom: 0;
   }
 }
+
+#rtg-main {
+  height: 100%;
+  position: relative;
+  width: 100%;
+}

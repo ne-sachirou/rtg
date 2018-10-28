@@ -6,7 +6,7 @@ defmodule RtgWeb.Mixfile do
       aliases: aliases(),
       app: :rtg_web,
       build_path: "../../_build",
-      compilers: [:phoenix, :gettext, :elixir_script] ++ Mix.compilers(),
+      compilers: [:phoenix, :gettext] ++ Mix.compilers() ++ [:elixir_script],
       config_path: "../../config/config.exs",
       deps: deps(),
       deps_path: "../../deps",
