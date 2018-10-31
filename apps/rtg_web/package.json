@@ -8,8 +8,10 @@
     "test": "test"
   },
   "scripts": {
+    "clean": "rm -rf .cache",
     "compile": "node_modules/.bin/parcel build lib/app.js -d priv/static/js",
-    "test": "mix test"
+    "format": "npx prettier --write package.json lib/app.js",
+    "outdated": "npx npm-check-updates --packageFile package.json"
   },
   "author": "ne_Sachirou <utakata.c4se@gmail.com>",
   "license": "AGPL-3.0-or-later",

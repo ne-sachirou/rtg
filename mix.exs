@@ -3,6 +3,7 @@ defmodule Rtg.Umbrella.Mixfile do
 
   def project do
     [
+      aliases: aliases(),
       apps_path: "apps",
       deps: deps(),
       dialyzer: [
@@ -19,6 +20,26 @@ defmodule Rtg.Umbrella.Mixfile do
       start_permanent: Mix.env() == :prod,
       test_coverage: [tool: ExCoveralls]
     ]
+  end
+
+  defp aliases do
+    [
+      clean: deftask("clean", "run clean"),
+      compile: deftask("compile", "run compile"),
+      format: deftask("format", "run format"),
+      outdated: deftask("hex.outdated", "run outdated"),
+      setup: deftask("deps.get", "install")
+    ]
+  end
+
+  defp deftask(mix_task, npm_task) do
+    fn _ ->
+      Mix.Task.run(mix_task)
+
+      "apps/rtg_web"
+      |> Path.expand(__DIR__)
+      |> File.cd!(fn -> Mix.Shell.IO.cmd("npm #{npm_task}") end)
+    end
   end
 
   # Dependencies can be Hex packages:
