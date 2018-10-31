@@ -36,7 +36,7 @@ defmodule Rtg.Mixfile do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:ecto, "~> 3.0.0-rc"},
+      {:ecto, "~> 3.0"},
       {:ecto_sql, "~> 3.0.0-rc"},
       {:mariaex, "~> 0.9.0-rc"}
     ]
