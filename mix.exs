@@ -25,9 +25,9 @@ defmodule Rtg.Umbrella.Mixfile do
   defp aliases do
     [
       clean: deftask("clean", "run clean"),
-      compile: deftask("compile", "run compile"),
       format: deftask("format", "run format"),
       outdated: deftask("hex.outdated", "run outdated"),
+      release: deftask("compile", "run release"),
       setup: deftask("deps.get", "install")
     ]
   end
@@ -39,6 +39,8 @@ defmodule Rtg.Umbrella.Mixfile do
       "apps/rtg_web"
       |> Path.expand(__DIR__)
       |> File.cd!(fn -> Mix.Shell.IO.cmd("npm #{npm_task}") end)
+
+      :ok
     end
   end
 

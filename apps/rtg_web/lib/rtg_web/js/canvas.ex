@@ -7,6 +7,15 @@ defmodule RtgWeb.Js.Canvas do
   alias ElixirScript.JS
   alias ElixirScript.Web
 
+  @type t :: %{
+          id: reference,
+          context: term,
+          element: term,
+          height: non_neg_integer,
+          width: non_neg_integer
+        }
+
+  @spec from_id(binary) :: t
   def from_id(id) do
     element = Web.Document.getElementById(id)
     context = element.getContext("2d")
@@ -16,7 +25,7 @@ defmodule RtgWeb.Js.Canvas do
     JS.mutate(element, "width", w)
 
     %{
-      id: make_ref(),
+      __id__: make_ref(),
       context: context,
       element: element,
       height: h,
@@ -24,13 +33,64 @@ defmodule RtgWeb.Js.Canvas do
     }
   end
 
-  def loop(canvas, callback, state) do
-    put_state(canvas, state)
-    loop(canvas, callback)
+  @spec start(t, [{module, keyword}]) :: t
+  defmacro start(canvas, children) do
+    alias RtgWeb.Js.Macro, as: M
+
+    children =
+      for {module, args} <- children do
+        module_map =
+          M.module_to_map(
+            module,
+            init: [:args],
+            area?: [:point, :state],
+            handle_click: [:point, :state],
+            handle_frame: [:canvas, :state]
+          )
+
+        {module_map, args}
+      end
+
+    quote do
+      RtgWeb.Js.Canvas.do_start(unquote(canvas), unquote(children))
+    end
   end
 
-  def loop(canvas, callback) do
-    state = get_state(canvas)
+  @spec set(t, binary, term) :: t
+  def set(canvas, property, value) do
+    JS.mutate(canvas.context, property, value)
+    canvas
+  end
+
+  @doc false
+  def do_start(canvas, children) do
+    canvas.element.addEventListener("click", &handle_click(&1, canvas))
+
+    children =
+      children.map(
+        fn child, _, _ ->
+          {module, args} =
+            case child do
+              {module, args} -> {module, args}
+              module -> {module, []}
+            end
+
+          safe_canvas =
+            canvas |> Map.delete(:__id__) |> Map.delete(:element) |> Map.delete(:context)
+
+          {:ok, state} = module.init.(args ++ [canvas: safe_canvas])
+          {module, state}
+        end,
+        children
+      )
+
+    put_state(canvas, children)
+    Web.Window.requestAnimationFrame(fn _ -> loop(canvas) end)
+    canvas
+  end
+
+  defp loop(canvas) do
+    children = get_state(canvas)
     h = canvas.element.offsetHeight
     w = canvas.element.offsetWidth
 
@@ -44,34 +104,52 @@ defmodule RtgWeb.Js.Canvas do
       end
 
     canvas.context.clearRect(0, 0, w, h)
-    state = callback.(canvas, state)
-    put_state(canvas, state)
-    Web.Window.requestAnimationFrame(fn _ -> loop(canvas, callback) end)
-    canvas
+
+    children =
+      children.map(
+        fn {module, state}, _, _ ->
+          {:ok, state} = module.handle_frame.(canvas, state)
+          {module, state}
+        end,
+        children
+      )
+
+    put_state(canvas, children)
+    Web.Window.requestAnimationFrame(fn _ -> loop(canvas) end)
   end
 
-  def on_click(canvas, callback) do
-    canvas.element.addEventListener("click", fn event ->
-      state = get_state(canvas)
-      event.preventDefault()
-      event.stopPropagation()
-      state = callback.(canvas, %{x: event.layerX, y: event.layerY}, state)
-      put_state(canvas, state)
-    end)
+  defp handle_click(event, canvas) do
+    children = get_state(canvas)
+    event.preventDefault()
+    event.stopPropagation()
+    point = %{x: event.layerX, y: event.layerY}
+    children.reverse()
 
-    canvas
-  end
+    %{children: children} =
+      children.reduce(
+        fn accm, {module, state}, _, _ ->
+          {state, accm} =
+            if not accm.stop_propagation? do
+              {area?, stop_propagation?} = module.area?.(point, state)
+              {:ok, state} = if area?, do: module.handle_click.(point, state), else: {:ok, state}
+              {state, %{accm | stop_propagation?: stop_propagation?}}
+            else
+              {state, accm}
+            end
 
-  def set(canvas, property, value) do
-    JS.mutate(canvas.context, property, value)
-    canvas
+          %{accm | children: [{module, state} | accm.children]}
+        end,
+        %{children: [], stop_propagation?: false}
+      )
+
+    put_state(canvas, children)
   end
 
   defp get_state(canvas) do
-    {:ok, state} = Map.fetch(Store.read(:rtg), canvas.id)
+    {:ok, state} = Map.fetch(Store.read(:rtg), canvas.__id__)
     state
   end
 
   defp put_state(canvas, state),
-    do: Store.update(:rtg, Map.put(Store.read(:rtg), canvas.id, state))
+    do: Store.update(:rtg, Map.put(Store.read(:rtg), canvas.__id__, state))
 end
