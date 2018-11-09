@@ -21,7 +21,8 @@ defmodule RtgWeb.Router do
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", RtgWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", RtgWeb do
+    pipe_through :api
+    resources("/users", UserController)
+  end
 end
