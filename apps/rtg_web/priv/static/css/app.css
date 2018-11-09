@@ -10,8 +10,8 @@
 
 /* Space out content a bit */
 body, form, ul, table {
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin: 0;
+  padding: 0;
 }
 
 /* Phoenix flash messages */
@@ -74,6 +74,12 @@ body, form, ul, table {
   .jumbotron {
     border-bottom: 0;
   }
+}
+
+main {
+  height: 100%;
+  position: absolute;
+  width: 100%;
 }
 
 #rtg-main {
