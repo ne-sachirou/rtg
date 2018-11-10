@@ -1,6 +1,8 @@
 defmodule RtgWeb.UserSocket do
   use Phoenix.Socket
 
+  channel "matching:lobby", RtgWeb.MatchingChannel
+
   ## Channels
   # channel "room:*", RtgWeb.RoomChannel
 
