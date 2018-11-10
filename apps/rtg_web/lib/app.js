@@ -6,4 +6,8 @@ import "@babel/polyfill";
 import "../priv/elixir_script/build/ElixirScript.Core.js";
 import RtgWeb from "../priv/elixir_script/build/Elixir.RtgWeb.Js.js";
 
+Phoenix.Socket.create = function(path, params) {
+  return new Phoenix.Socket(path, params);
+};
+
 RtgWeb.main();

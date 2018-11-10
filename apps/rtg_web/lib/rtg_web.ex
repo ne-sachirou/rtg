@@ -54,7 +54,7 @@ defmodule RtgWeb do
 
   def channel do
     quote do
-      use Phoenix.Channel
+      use Phoenix.Channel, log_join: :info, log_handle_in: :debug
       import RtgWeb.Gettext
     end
   end

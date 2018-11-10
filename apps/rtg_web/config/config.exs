@@ -15,7 +15,11 @@ config :rtg_web, RtgWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "AqvKjGNt6VfrUw6djMHv70dU4csBJe2oEmO6BdxZCZWth1lVECT6ny7zW5wLvRAD",
   render_errors: [view: RtgWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: RtgWeb.PubSub, adapter: Phoenix.PubSub.PG2]
+  pubsub: [
+    name: RtgWeb.PubSub,
+    adapter: Phoenix.PubSub.RedisZ,
+    redis_urls: ["redis://localhost:6379/0"]
+  ]
 
 # Configures Elixir's Logger
 config :logger, :console,

@@ -8,7 +8,7 @@ defmodule RtgWeb.Js.Canvas do
   alias ElixirScript.Web
 
   @type t :: %{
-          id: reference,
+          __id__: reference,
           context: term,
           element: term,
           height: non_neg_integer,
@@ -42,8 +42,10 @@ defmodule RtgWeb.Js.Canvas do
         module_map =
           M.module_to_map(
             module,
+            id: [],
             init: [:args],
             area?: [:point, :state],
+            handle_cast: [:message, :state],
             handle_click: [:point, :state],
             handle_frame: [:canvas, :state]
           )
@@ -51,15 +53,33 @@ defmodule RtgWeb.Js.Canvas do
         {module_map, args}
       end
 
-    quote do
-      RtgWeb.Js.Canvas.do_start(unquote(canvas), unquote(children))
-    end
+    quote do: RtgWeb.Js.Canvas.do_start(unquote(canvas), unquote(children))
   end
 
   @spec set(t, binary, term) :: t
   def set(canvas, property, value) do
     JS.mutate(canvas.context, property, value)
     canvas
+  end
+
+  def cast(id, dest, message) do
+    children = get_state(id)
+
+    children =
+      children.map(
+        fn {module, state}, _, _ ->
+          {:ok, state} =
+            if dest == module.id.(),
+              do: module.handle_cast.(message, state),
+              else: {:ok, state}
+
+          {module, state}
+        end,
+        children
+      )
+
+    put_state(id, children)
+    :ok
   end
 
   @doc false
@@ -75,9 +95,7 @@ defmodule RtgWeb.Js.Canvas do
               module -> {module, []}
             end
 
-          safe_canvas =
-            canvas |> Map.delete(:__id__) |> Map.delete(:element) |> Map.delete(:context)
-
+          safe_canvas = canvas |> Map.delete(:element) |> Map.delete(:context)
           {:ok, state} = module.init.(args ++ [canvas: safe_canvas])
           {module, state}
         end,
@@ -145,11 +163,15 @@ defmodule RtgWeb.Js.Canvas do
     put_state(canvas, children)
   end
 
-  defp get_state(canvas) do
-    {:ok, state} = Map.fetch(Store.read(:rtg), canvas.__id__)
+  defp get_state(id) when is_reference(id) do
+    {:ok, state} = Map.fetch(Store.read(:rtg), id)
     state
   end
 
-  defp put_state(canvas, state),
-    do: Store.update(:rtg, Map.put(Store.read(:rtg), canvas.__id__, state))
+  defp get_state(canvas), do: get_state(canvas.__id__)
+
+  defp put_state(id, state) when is_reference(id),
+    do: Store.update(:rtg, Map.put(Store.read(:rtg), id, state))
+
+  defp put_state(canvas, state), do: put_state(canvas.__id__, state)
 end

@@ -1,11 +1,9 @@
 defmodule RtgWeb.UserSocket do
   use Phoenix.Socket
 
-  channel "game:lobby", RtgWeb.GameChannel
-  channel "matching:lobby", RtgWeb.MatchingChannel
-
   ## Channels
-  # channel "room:*", RtgWeb.RoomChannel
+  channel "game:*", RtgWeb.GameChannel
+  channel "matching:lobby", RtgWeb.MatchingChannel
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After

@@ -1,7 +1,8 @@
-defmodule RtgWeb.Js.Player do
+defmodule RtgWeb.Js.Enemy do
   @moduledoc """
   """
 
+  alias ElixirScript.JS
   alias RtgWeb.Js.Canvas
   alias RtgWeb.Js.Date
   alias RtgWeb.Js.GameChannel
@@ -10,16 +11,10 @@ defmodule RtgWeb.Js.Player do
 
   use Gen2D
 
-  @type t :: %{
-          current: Gen2D.point(),
-          prev: Gen2D.point(),
-          dest: Gen2D.point(),
-          anim: %{start: non_neg_integer, end: non_neg_integer}
-        }
+  @type t :: %{}
 
   @pi :math.pi()
   @radius 60
-  @anim_ms 600
 
   @impl Gen2D
   def init(args) do
@@ -33,34 +28,25 @@ defmodule RtgWeb.Js.Player do
       anim: %{start: 0, end: 0}
     }
 
+    GameChannel.on("move_to", fn msg, _, _ ->
+      msg = JS.object_to_map(msg)
+      Gen2D.cast(canvas.__id__, id(), {:move_to, msg.dest, msg.anim_end})
+    end)
+
     {:ok, state}
   end
 
   @impl Gen2D
-  def area?(point, state) do
-    dx = state.current.x - point.x
-    dy = state.current.y - point.y
-    {dx * dx + dy * dy > @radius * @radius, false}
-  end
-
-  @impl Gen2D
-  def handle_click(point, state) do
+  def handle_cast({:move_to, dest, anim_end}, state) do
     now = Date.now()
-    anim_end = now + @anim_ms
-
-    GameChannel.push("move_to", %{
-      "dest" => %{"x" => point.x, "y" => point.y},
-      "anim_end" => anim_end
-    })
-
-    state = %{state | prev: state.current, dest: point, anim: %{start: now, end: anim_end}}
+    state = %{state | prev: state.current, dest: dest, anim: %{start: now, end: anim_end}}
     {:ok, state}
   end
 
   @impl Gen2D
   def handle_frame(canvas, state) do
     state = next(state)
-    Canvas.set(canvas, "strokeStyle", "#FFF")
+    Canvas.set(canvas, "strokeStyle", "#F33")
     canvas.context.beginPath()
     canvas.context.arc(state.current.x, state.current.y, @radius, 0, @pi * 2)
     canvas.context.stroke()

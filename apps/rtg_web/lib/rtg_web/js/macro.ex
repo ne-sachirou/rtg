@@ -1,5 +1,5 @@
 defmodule RtgWeb.Js.Macro do
-  @module false
+  @moduledoc false
 
   def module_to_map({:__aliases__, line, module_name}, behaviour) do
     functions =

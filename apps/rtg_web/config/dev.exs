@@ -39,12 +39,12 @@ config :rtg_web, RtgWeb.Endpoint,
 # different ports.
 
 # Watch static and templates for browser reloading.
-config :rtg_web, RtgWeb.Endpoint,
-  live_reload: [
-    patterns: [
-      ~r{priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$},
-      ~r{priv/gettext/.*(po)$},
-      ~r{lib/rtg_web/views/.*(ex)$},
-      ~r{lib/rtg_web/templates/.*(eex)$}
-    ]
-  ]
+# config :rtg_web, RtgWeb.Endpoint,
+#   live_reload: [
+#     patterns: [
+#       ~r{priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$},
+#       ~r{priv/gettext/.*(po)$},
+#       ~r{lib/rtg_web/views/.*(ex)$},
+#       ~r{lib/rtg_web/templates/.*(eex)$}
+#     ]
+#   ]

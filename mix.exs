@@ -24,17 +24,17 @@ defmodule Rtg.Umbrella.Mixfile do
 
   defp aliases do
     [
-      clean: deftask("clean", "run clean"),
-      format: deftask("format", "run format"),
-      outdated: deftask("hex.outdated", "run outdated"),
-      release: deftask("compile", "run release"),
-      setup: deftask("deps.get", "install")
+      "rtg.clean": deftask("clean", "run clean"),
+      "rtg.format": deftask("format", "run format"),
+      "rtg.outdated": deftask("hex.outdated", "run outdated"),
+      "rtg.release": deftask("compile", "run release"),
+      "rtg.setup": deftask(["deps.get", "ecto.create", "ecto.migrate"], "install")
     ]
   end
 
-  defp deftask(mix_task, npm_task) do
+  defp deftask(mix_tasks, npm_task) do
     fn _ ->
-      Mix.Task.run(mix_task)
+      mix_tasks |> List.wrap() |> Enum.each(&Mix.Task.run/1)
 
       "apps/rtg_web"
       |> Path.expand(__DIR__)
