@@ -18,7 +18,8 @@ config :rtg_web, RtgWeb.Endpoint,
   pubsub: [
     name: RtgWeb.PubSub,
     adapter: Phoenix.PubSub.RedisZ,
-    redis_urls: ["redis://localhost:6379/0"]
+    redis_urls: ["redis://localhost:6379/0"],
+    node_name: :"rtg@127.0.0.1"
   ]
 
 # Configures Elixir's Logger
