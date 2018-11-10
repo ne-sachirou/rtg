@@ -2,6 +2,7 @@ defmodule RtgWeb.Game do
   @moduledoc false
 
   alias RtgWeb.Game
+  alias RtgWeb.Game.Worker
 
   use Supervisor
 

@@ -1,5 +1,6 @@
 defmodule RtgWeb.Js.Player do
   @moduledoc """
+  自分
   """
 
   alias RtgWeb.Js.Canvas
@@ -9,6 +10,8 @@ defmodule RtgWeb.Js.Player do
   alias RtgWeb.Js.Math
 
   use Gen2D
+
+  @dialyzer [:no_fail_call, :no_return]
 
   @type t :: %{
           current: Gen2D.point(),

@@ -11,6 +11,8 @@ defmodule RtgWeb.Js do
 
   require Canvas
 
+  @dialyzer :no_return
+
   def main do
     Store.create(%{}, :rtg)
 

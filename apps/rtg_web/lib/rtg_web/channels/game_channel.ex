@@ -1,10 +1,12 @@
 defmodule RtgWeb.GameChannel do
-  use RtgWeb, :channel
+  @moduledoc false
 
   alias Phoenix.Channel
   alias RtgWeb.Game
 
   require Logger
+
+  use RtgWeb, :channel
 
   intercept(["move_to"])
 

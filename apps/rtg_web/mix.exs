@@ -42,7 +42,7 @@ defmodule RtgWeb.Mixfile do
       {:elixir_script, "~> 0.32"},
       {:elixir_script_web, "~> 0.2"},
       {:gettext, "~> 0.16"},
-      {:phoenix, "~> 1.4.0-rc", override: true},
+      {:phoenix, "~> 1.4"},
       {:phoenix_ecto, "~> 4.0"},
       {:phoenix_html, "~> 2.12"},
       {:phoenix_live_reload, "~> 1.1", only: :dev},

@@ -3,7 +3,8 @@ defmodule RtgWeb.GameChannelTest do
 
   setup do
     {:ok, _, socket} =
-      socket(RtgWeb.UserSocket, "user_id", %{some: :assign})
+      RtgWeb.UserSocket
+      |> socket("user_id", %{some: :assign})
       |> subscribe_and_join(RtgWeb.GameChannel, "game:lobby")
 
     {:ok, socket: socket}

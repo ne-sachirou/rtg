@@ -1,10 +1,13 @@
 defmodule RtgWeb.Js.GameChannel do
   @moduledoc """
+  RtgWeb.GameChannelに接続する
   """
 
   alias ElixirScript.Core.Store
   alias ElixirScript.JS
   alias ElixirScript.Web
+
+  @dialyzer [:no_fail_call, :no_return]
 
   def start(socket, game) do
     ch = socket.channel("game:" <> game.id, JS.map_to_object(%{}))

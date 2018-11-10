@@ -8,8 +8,8 @@ defmodule RtgWeb.Matching do
   use GenServer
 
   @type player :: %{
-          pid: pid,
-          monitor: reference
+          required(:pid) => pid,
+          optional(:monitor) => reference
         }
 
   @type t :: %{players: [player]}
@@ -59,7 +59,6 @@ defmodule RtgWeb.Matching do
 
     for players <- matched,
         game_id = Game.create(),
-        Logger.debug(inspect({__MODULE__, :matched, game_id, players})) || true,
         player <- players do
       send(player.pid, {:matched, game_id})
       Process.demonitor(player.monitor)

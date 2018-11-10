@@ -1,5 +1,6 @@
 defmodule RtgWeb.Js.Bg do
   @moduledoc """
+  背景
   """
 
   alias RtgWeb.Js.{Canvas, Gen2D}

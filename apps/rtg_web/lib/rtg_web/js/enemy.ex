@@ -1,5 +1,6 @@
 defmodule RtgWeb.Js.Enemy do
   @moduledoc """
+  相手
   """
 
   alias ElixirScript.JS
@@ -10,6 +11,8 @@ defmodule RtgWeb.Js.Enemy do
   alias RtgWeb.Js.Math
 
   use Gen2D
+
+  @dialyzer [:no_fail_call, :no_return]
 
   @type t :: %{}
 
@@ -53,7 +56,6 @@ defmodule RtgWeb.Js.Enemy do
     {:ok, state}
   end
 
-  @spec next(t) :: t
   defp next(state) do
     now = Date.now()
 

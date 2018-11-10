@@ -1,0 +1,2 @@
+apps/rtg_web/lib/rtg_web/channels/game_channel.ex:15: Guard test __@1::'true' =:= 'false' can never succeed
+apps/rtg_web/lib/rtg_web/channels/matching_channel.ex:13: Guard test __@1::'true' =:= 'false' can never succeed

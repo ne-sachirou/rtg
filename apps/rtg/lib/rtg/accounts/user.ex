@@ -1,6 +1,9 @@
 defmodule Rtg.Accounts.User do
-  use Ecto.Schema
+  @moduledoc false
+
   import Ecto.Changeset
+
+  use Ecto.Schema
 
   schema "users" do
     field(:name, :string)

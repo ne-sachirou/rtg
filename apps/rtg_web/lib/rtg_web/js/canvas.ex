@@ -7,6 +7,8 @@ defmodule RtgWeb.Js.Canvas do
   alias ElixirScript.JS
   alias ElixirScript.Web
 
+  @dialyzer [:no_fail_call, :no_return, :no_unused]
+
   @type t :: %{
           __id__: reference,
           context: term,
@@ -33,7 +35,6 @@ defmodule RtgWeb.Js.Canvas do
     }
   end
 
-  @spec start(t, [{module, keyword}]) :: t
   defmacro start(canvas, children) do
     alias RtgWeb.Js.Macro, as: M
 

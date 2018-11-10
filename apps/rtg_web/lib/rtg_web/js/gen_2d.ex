@@ -1,8 +1,11 @@
 defmodule RtgWeb.Js.Gen2D do
   @moduledoc """
+  画面に描画される要素
   """
 
   alias RtgWeb.Js.Canvas
+
+  @dialyzer :no_return
 
   @type point :: %{x: non_neg_integer, y: non_neg_integer}
 

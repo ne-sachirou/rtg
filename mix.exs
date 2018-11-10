@@ -6,11 +6,7 @@ defmodule Rtg.Umbrella.Mixfile do
       aliases: aliases(),
       apps_path: "apps",
       deps: deps(),
-      dialyzer: [
-        flags: [:no_undefined_callbacks],
-        ignore_warnings: "dialyzer.ignore-warnings",
-        remove_defaults: [:unknown]
-      ],
+      dialyzer: [ignore_warnings: "dialyzer.ignore-warnings"],
       preferred_cli_env: [
         coveralls: :test,
         "coveralls.detail": :test,
